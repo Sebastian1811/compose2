@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: microservicio-transacciones
+  name: microservicio-transacciones
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: microservicio-transacciones
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: microservicio-transacciones
+    spec:
+      containers:
+        - env:
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://eureka-server:8761/eureka
+          image: ' '
+          name: microservicio-transacciones
+          ports:
+            - containerPort: 8020
+          resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - microservicio-transacciones
+        from:
+          kind: ImageStreamTag
+          name: microservicio-transacciones:v2
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
